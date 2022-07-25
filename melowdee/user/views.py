@@ -10,7 +10,9 @@ def user_signup(request):
     """
 
     if request.method == 'POST':
+        print(request)
         data = JSONParser().parse(request)
+        print(data)
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
             print(serializer)

@@ -12,6 +12,7 @@ class UserSerializer(serializers.Serializer):
     password = serializers.CharField(allow_null=False)
 
     def create(self, validated_data):
+        print(validated_data)
         username = validated_data.get('username')
         email = validated_data.get('email')
         age = validated_data.get('age')
