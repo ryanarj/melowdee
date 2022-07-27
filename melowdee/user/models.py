@@ -6,4 +6,5 @@ class UserMetadata(models.Model):
     age = models.IntegerField()
     is_active = models.BooleanField(default=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    last_login_at = models.DateField(null=True, blank=True)
 

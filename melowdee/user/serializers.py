@@ -24,3 +24,18 @@ class UserSerializer(serializers.Serializer):
             return user
         else:
             print('User exists')
+
+
+class UserSigninSerializer(serializers.Serializer):
+    email = serializers.CharField(allow_null=False)
+    password = serializers.CharField(allow_null=False)
+
+    def create(self, validated_data):
+        email = validated_data.get('email')
+        password = validated_data.get('password')
+        user_q = User.objects.filter(email=email, password=password)
+        if user_q.exists():
+            user = user_q.first()
+            return user
+        return None
+
