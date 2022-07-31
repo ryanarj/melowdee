@@ -34,7 +34,11 @@ def user_sign_in(request):
             user = serializer.save()
             if user:
                 user_meta = UserMetadata.objects.get(user_id=user.id)
+                data = {
+                    'age': user_meta.age,
+                    'username': user_meta.user.username,
+                }
                 user_meta.last_login_at = arrow.utcnow().datetime
                 user_meta.save()
-                return JsonResponse(serializer.data, status=201)
+                return JsonResponse(data, status=201)
         return JsonResponse(serializer.errors, status=400)
