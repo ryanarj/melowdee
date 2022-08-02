@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
@@ -38,7 +39,8 @@ def user_sign_in(request):
                     'age': user_meta.age,
                     'username': user_meta.user.username,
                 }
-                user_meta.last_login_at = arrow.utcnow().datetime
-                user_meta.save()
+                with transaction.atomic():
+                    user_meta.last_login_at = arrow.utcnow().datetime
+                    user_meta.save()
                 return JsonResponse(data, status=201)
         return JsonResponse(serializer.errors, status=400)
