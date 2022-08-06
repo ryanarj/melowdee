@@ -1,5 +1,5 @@
 from django.urls import path
-from melowdee.user import views
+from melowdee.auth.user import views
 
 
 urlpatterns = [

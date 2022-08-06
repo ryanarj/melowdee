@@ -3,8 +3,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 
-from melowdee.user.models import UserMetadata
-from melowdee.user.serializers import UserSerializer, UserSigninSerializer
+from melowdee.auth.user.models import UserMetadata
+from melowdee.auth.user.serializers import UserSerializer, UserSigninSerializer
 
 
 @csrf_exempt
