@@ -5,5 +5,5 @@ from melowdee.core.artist.models import Artist
 
 class Album(models.Model):
     name = models.CharField(max_length=100)
-    about = models.TextField()
+    about = models.TextField(null=True, blank=True)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
