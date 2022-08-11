@@ -1,12 +1,10 @@
-
-
-
-from django.db import transaction
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-
-from melowdee.core.artist.serializer import AddArtistSerializer
+from melowdee.core.artist.models import Artist
+from melowdee.core.artist.serializer import AddArtistSerializer, AllArtistsSerializer
+from melowdee.settings import ARTISTS_PER_PAGE
 
 
 @csrf_exempt
@@ -22,3 +20,18 @@ def add_artist(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
+@csrf_exempt
+def all_artists(request):
+    """
+    send all artists
+    """
+
+    if request.method == 'GET':
+        all_arts = Artist.objects.all().order_by('id')
+        paginated = Paginator(all_arts, ARTISTS_PER_PAGE)
+        page = request.GET.get('page', 1)
+        artists = paginated.get_page(page)
+        serializer = AllArtistsSerializer(artists, many=True)
+        return JsonResponse(serializer.data, safe=False)

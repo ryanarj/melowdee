@@ -17,3 +17,13 @@ class AddArtistSerializer(serializers.Serializer):
             return artist
         else:
             print('Artist exists')
+
+
+class AllArtistsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Artist
+        fields = (
+            'id',
+            'name'
+        )

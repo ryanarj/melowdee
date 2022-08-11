@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'melowdee.core.album',
     'melowdee.core.artist',
     'melowdee.core.song',
-    'corsheaders'
+    'corsheaders',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -148,3 +149,5 @@ CORS_ALLOWED_ORIGINS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+ARTISTS_PER_PAGE = 10
