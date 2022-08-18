@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from melowdee.core.artist.models import Artist
-from melowdee.core.artist.serializer import AddArtistSerializer, AllArtistsSerializer
+from melowdee.core.artist.serializer import AddArtistSerializer, AllArtistsSerializer, ArtistSerializer
 from melowdee.settings import ARTISTS_PER_PAGE
 
 
@@ -35,3 +35,22 @@ def all_artists(request):
         artists = paginated.get_page(page)
         serializer = AllArtistsSerializer(artists, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+
+@csrf_exempt
+def grab_artist_data(request):
+    """
+    get a artists
+    """
+
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = ArtistSerializer(data=data)
+        if serializer and serializer.is_valid():
+            artist = serializer.save()
+            data = {
+                'name': artist.age,
+                'about': artist.about,
+            }
+            return JsonResponse(data, status=201)
+        return JsonResponse(serializer.errors, status=400)

@@ -1,9 +1,7 @@
-from django.db import transaction
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 
-from melowdee.core.song.models import Song, SongLyrics
 from melowdee.core.song.serializer import SongSeriaizer
 
 

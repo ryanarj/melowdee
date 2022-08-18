@@ -27,3 +27,15 @@ class AllArtistsSerializer(serializers.ModelSerializer):
             'id',
             'name'
         )
+
+
+class ArtistSerializer(serializers.Serializer):
+    id = serializers.CharField(allow_null=False)
+
+    def create(self, validated_data):
+        id = validated_data.get('id')
+        artist = Artist.objects.filter(id=id)
+        if artist.exists():
+            return artist.first()
+        else:
+            print('Artist exists')
