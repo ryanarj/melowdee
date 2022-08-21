@@ -49,7 +49,7 @@ def grab_artist_data(request):
         if serializer and serializer.is_valid():
             artist = serializer.save()
             data = {
-                'name': artist.age,
+                'name': artist.name,
                 'about': artist.about,
             }
             return JsonResponse(data, status=201)
