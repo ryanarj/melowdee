@@ -21,4 +21,5 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path('', include('melowdee.auth.user.urls')),
     path('', include('melowdee.core.artist.urls')),
+    path('', include('melowdee.core.album.urls')),
 ]

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from melowdee.core.artist.models import Artist
-from melowdee.core.artist.serializer import AddArtistSerializer, AllArtistsSerializer, ArtistSerializer
+from melowdee.core.artist.serializers import AddArtistSerializer, AllArtistsSerializer, ArtistSerializer
 from melowdee.settings import ARTISTS_PER_PAGE
 
 
