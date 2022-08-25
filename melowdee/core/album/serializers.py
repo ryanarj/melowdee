@@ -15,10 +15,10 @@ class AddAlbumSerializer(serializers.Serializer):
         about = validated_data.get('about')
         artist_id = validated_data.get('artist_id')
 
-        if not Album.objects.filter(name=name, artist_id=artist_id).exists():
+        album = Album.objects.filter(name=name, artist_id=artist_id)
+        if not album.exists():
             artist = Artist.objects.filter(id=artist_id)
-
-            if not artist:
+            if artist.exists():
                 with transaction.atomic():
                     album = Album.objects.create(name=name, about=about, artist=artist.first())
 
