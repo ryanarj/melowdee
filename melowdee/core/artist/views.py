@@ -5,6 +5,7 @@ from rest_framework.parsers import JSONParser
 from melowdee.core.artist.models import Artist
 from melowdee.core.artist.serializers import AddArtistSerializer, AllArtistsSerializer, ArtistSerializer
 from melowdee.settings import ARTISTS_PER_PAGE
+from django.core.cache import cache
 
 
 @csrf_exempt
@@ -27,7 +28,6 @@ def all_artists(request):
     """
     send all artists
     """
-
     if request.method == 'GET':
         all_arts = Artist.objects.all().order_by('id')
         paginated = Paginator(all_arts, ARTISTS_PER_PAGE)
@@ -45,12 +45,21 @@ def grab_artist_data(request):
 
     if request.method == 'POST':
         data = JSONParser().parse(request)
-        serializer = ArtistSerializer(data=data)
-        if serializer and serializer.is_valid():
-            artist = serializer.save()
+        if cache.get(data.get('id')):
+            artist_data = cache.get(data.get('id'))
             data = {
-                'name': artist.name,
-                'about': artist.about,
+                'name': artist_data.name,
+                'about': artist_data.about,
             }
             return JsonResponse(data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+        else:
+            serializer = ArtistSerializer(data=data)
+            if serializer and serializer.is_valid():
+                artist = serializer.save()
+                data = {
+                    'name': artist.name,
+                    'about': artist.about,
+                }
+                cache.set(artist.id, data)
+                return JsonResponse(data, status=201)
+            return JsonResponse(serializer.errors, status=400)
