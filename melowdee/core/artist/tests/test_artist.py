@@ -17,9 +17,9 @@ class ArtistTestCase(TestCase):
         }, format='json')
         response = add_artist(request)
 
-        user = Artist.objects.filter(name=artist)
-        assert user.exists() is True
-        assert user.count() == 1
+        art = Artist.objects.filter(name=artist)
+        assert art.exists() is True
+        assert art.count() == 1
         assert response.status_code == 201
 
     def test_all_artists(self):
