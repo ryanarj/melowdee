@@ -1,7 +1,8 @@
-from django.conf import settings
-from django.conf.urls.static import static
+from django.urls import path
+from melowdee.core.song import views
 
 
 urlpatterns = [
-
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('add_song/', views.add_song),
+    path('all_songs_for_album/', views.all_songs_for_album)
+]

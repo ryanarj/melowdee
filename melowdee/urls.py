@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('melowdee.auth.user.urls')),
     path('', include('melowdee.core.artist.urls')),
     path('', include('melowdee.core.album.urls')),
+    path('', include('melowdee.core.song.urls')),
 ]

@@ -38,6 +38,6 @@ def all_albums_for_artist(request):
                 cache.set(f'{artist_id}_artist_data', serializer.data)
                 return JsonResponse(serializer.data, safe=False)
             else:
-                return JsonResponse(data, status=400)
+                return JsonResponse(album_data, safe=False)
         else:
             return JsonResponse(album_data, safe=False)
