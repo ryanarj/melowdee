@@ -2,7 +2,6 @@ from django.db import transaction
 from rest_framework import serializers
 
 from melowdee.core.album.models import Album
-from melowdee.core.artist.models import Artist
 from melowdee.core.song.models import Song
 
 
@@ -16,7 +15,6 @@ class SongSeriaizer(serializers.Serializer):
     chorus = serializers.CharField(allow_null=False)
 
     def create(self, validated_data):
-        print(validated_data)
         name = validated_data.get('name')
         album_id = validated_data.get('album_id')
         verse_one = validated_data.get('verse_one')
@@ -26,16 +24,19 @@ class SongSeriaizer(serializers.Serializer):
         chorus = validated_data.get('chorus')
 
         album_q = Album.objects.filter(id=album_id)
-        print(album_q)
         if album_q.exists():
             album = album_q.first()
             song_q = Song.objects.filter(name=name, album=album_q.first())
-            print(song_q)
             if not song_q.exists():
                 with transaction.atomic():
                     song = Song.objects.create(
                         name=name,
                         album=album,
+                        verse_one=verse_one,
+                        verse_two=verse_two,
+                        verse_three=verse_three,
+                        verse_four=verse_four,
+                        chorus=chorus
                     )
                 return song
 

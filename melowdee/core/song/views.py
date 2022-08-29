@@ -1,9 +1,6 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-
-from melowdee.core.album.models import Album
-from melowdee.core.album.serializers import AlbumSerializer
 from django.core.cache import cache
 
 from melowdee.core.song.models import Song
