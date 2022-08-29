@@ -22,7 +22,7 @@ class UserTestCase(TestCase):
         assert user.exists() is True
         assert response.status_code == 201
 
-    def test_user_user_sign_in(self):
+    def test_user_sign_in(self):
         factory = APIRequestFactory()
         test_username = 'Test23'
         test_email = 'Test23@melowdee.com'

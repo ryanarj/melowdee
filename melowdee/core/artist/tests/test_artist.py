@@ -7,7 +7,7 @@ from melowdee.core.artist.views import add_artist, all_artists
 
 class ArtistTestCase(TestCase):
 
-    def test_user_signup(self):
+    def test_add_artist(self):
         factory = APIRequestFactory()
         artist = 'The Strokes'
         about = 'Greatness'
@@ -22,7 +22,7 @@ class ArtistTestCase(TestCase):
         assert user.count() == 1
         assert response.status_code == 201
 
-    def test_user_user_sign_in(self):
+    def test_all_artists(self):
         factory = APIRequestFactory()
         artist = 'Biggie Smalls'
         about = 'Greatness'

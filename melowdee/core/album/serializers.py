@@ -27,3 +27,13 @@ class AddAlbumSerializer(serializers.Serializer):
                 print('Artist does not exists')
         else:
             print('Album exists')
+
+
+class AlbumSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Album
+        fields = (
+            'id',
+            'name'
+        )
