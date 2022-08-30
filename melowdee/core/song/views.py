@@ -4,7 +4,7 @@ from rest_framework.parsers import JSONParser
 from django.core.cache import cache
 
 from melowdee.core.song.models import Song
-from melowdee.core.song.serializer import SongSeriaizer, SongSerializer
+from melowdee.core.song.serializer import SongSeriaizer, SongSerializer, SongLyricsSerializer
 
 
 @csrf_exempt
@@ -15,12 +15,10 @@ def add_song(request):
 
     if request.method == 'POST':
         data = JSONParser().parse(request)
-        print(data)
         serializer = SongSeriaizer(data=data)
         if serializer and serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
-        print(serializer.errors)
         return JsonResponse(serializer.errors, status=400)
 
 
@@ -43,3 +41,24 @@ def all_songs_for_album(request):
                 return JsonResponse(album_data, safe=False)
         else:
             return JsonResponse(album_data, safe=False)
+
+
+@csrf_exempt
+def grab_song_data(request):
+    """
+    send all artist's albums
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        song_id = data.get('id')
+        song_data = cache.get(f'{song_id}_song_data')
+        if song_data is None:
+            song = Song.objects.filter(id=song_id).first()
+            if song:
+                serializer = SongLyricsSerializer(song)
+                cache.set(f'{song_id}_song_data', serializer.data)
+                return JsonResponse(serializer.data, safe=False)
+            else:
+                return JsonResponse(song_data, safe=False)
+        else:
+            return JsonResponse(song_data, safe=False)

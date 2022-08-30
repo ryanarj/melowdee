@@ -51,6 +51,21 @@ class SongSerializer(serializers.ModelSerializer):
         )
 
 
+class SongLyricsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Song
+        fields = (
+            'id',
+            'name',
+            'verse_one',
+            'verse_two',
+            'verse_three',
+            'verse_four',
+            'chorus'
+        )
+
+
 
 
 
