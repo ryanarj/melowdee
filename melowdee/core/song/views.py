@@ -62,3 +62,20 @@ def grab_song_data(request):
                 return JsonResponse(song_data, safe=False)
         else:
             return JsonResponse(song_data, safe=False)
+
+@csrf_exempt
+def song_search(request):
+    """
+    search song
+    """
+    if request.method == 'GET':
+        search_value = request.GET.get('search')
+        if search_value is not None:
+            song = Song.objects.filter(name__icontains=search_value).first()
+            if song:
+                serializer = SongSerializer(song)
+                return JsonResponse(serializer.data, safe=False)
+            else:
+                return JsonResponse({}, safe=False)
+        else:
+            return JsonResponse({}, safe=False)
