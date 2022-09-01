@@ -73,7 +73,7 @@ def song_search(request):
         if search_value is not None:
             song = Song.objects.filter(name__icontains=search_value).first()
             if song:
-                serializer = SongSerializer(song)
+                serializer = SongSerializer(song, many=True)
                 return JsonResponse(serializer.data, safe=False)
             else:
                 return JsonResponse({}, safe=False)
