@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'melowdee.core.artist',
     'melowdee.core.song',
     'corsheaders',
-    'django_extensions'
+    'django_extensions',
+    'melowdee.core.article',
 ]
 
 MIDDLEWARE = [
