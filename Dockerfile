@@ -1,24 +1,19 @@
+# The first instruction is what image we want to base our container on
+# We Use an official Python runtime as a parent image
+FROM python:3.8
 
-FROM python:3.9-buster
+# The enviroment variable ensures that the python output is set straight
+# to the terminal with out buffering it first
+ENV PYTHONUNBUFFERED 1
 
-# install nginx
-RUN apt-get update && apt-get install nginx vim -y --no-install-recommends
-COPY nginx.default /etc/nginx/sites-available/default
-RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
+# create root directory for our project in the container
+RUN mkdir /melowdee
 
-# copy source and install dependencies
-RUN mkdir -p /opt/app
-RUN mkdir -p /opt/app/pip_cache
-RUN mkdir -p /opt/app/melowdee
-COPY requirements.txt start-server.sh /opt/app/
-COPY .pip_cache /opt/app/pip_cache/
-COPY melowdee /opt/app/melowdee/
-WORKDIR /opt/app
-RUN pip install -r requirements.txt --cache-dir /opt/app/pip_cache
-RUN chown -R www-data:www-data /opt/app
+# Set the working directory to /melowdee
+WORKDIR /melowdee
 
-# start server
-EXPOSE 8020
-STOPSIGNAL SIGTERM
-CMD ["/opt/app/start-server.sh"]
+# Copy the current directory contents into the container at /melowdee
+ADD . /melowdee/
+
+# Install any needed packages specified in requirements.txt
+RUN pip install -r requirements.txt
