@@ -11,7 +11,7 @@ class ArtistTestCase(TestCase):
         factory = APIRequestFactory()
         artist = 'The Strokes'
         about = 'Greatness'
-        request = factory.post('/artists/add/', {
+        request = factory.post('/artists/create/', {
             'name': artist,
             'about': about,
         }, format='json')
@@ -27,7 +27,7 @@ class ArtistTestCase(TestCase):
         artist = 'Biggie Smalls'
         about = 'Greatness'
 
-        request = factory.post('/artists/add', {
+        request = factory.post('/artists/create/', {
             'name': artist,
             'about': about,
         }, format='json')

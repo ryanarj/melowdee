@@ -36,7 +36,7 @@ def albums(request: WSGIRequest) -> JsonResponse:
 
     if request.method == 'POST':
 
-        if 'add' in request.path:
+        if 'create' in request.path:
             data: dict = JSONParser().parse(request)
             add_album_serializer: AddAlbumSerializer = AddAlbumSerializer(data=data)
             if add_album_serializer and add_album_serializer.is_valid():

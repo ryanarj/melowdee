@@ -18,7 +18,7 @@ class AlbumTestCase(TestCase):
                       'non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
 
         artist = Artist.objects.create(name='Metallica')
-        request = factory.post('/articles/add/', {
+        request = factory.post('/articles/create/', {
                 'title': title,
                 'description': description,
                 'artist_id': artist.id

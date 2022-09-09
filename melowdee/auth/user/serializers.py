@@ -5,7 +5,7 @@ from rest_framework import serializers
 from melowdee.auth.user.models import UserMetadata
 
 
-class UserSerializer(serializers.Serializer):
+class CreateUserSerializer(serializers.Serializer):
     username = serializers.CharField(allow_null=False)
     age = serializers.CharField(required=False, allow_blank=True, max_length=100)
     email = serializers.CharField(allow_null=False)

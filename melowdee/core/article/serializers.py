@@ -5,12 +5,12 @@ from melowdee.core.article.models import Article
 from melowdee.core.artist.models import Artist
 
 
-class AddArticleSerializer(serializers.Serializer):
+class CreateArticleSerializer(serializers.Serializer):
     title = serializers.CharField(allow_null=False)
     description = serializers.CharField(allow_null=False)
     artist_id = serializers.CharField(allow_null=False)
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict):
         title = validated_data.get('title')
         description = validated_data.get('description')
         artist_id = validated_data.get('artist_id')

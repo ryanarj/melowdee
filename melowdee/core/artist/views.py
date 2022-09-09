@@ -1,7 +1,11 @@
+from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.parsers import JSONParser
+from rest_framework.throttling import UserRateThrottle
+
 from melowdee.core.artist.models import Artist
 from melowdee.core.artist.serializers import AddArtistSerializer, AllArtistsSerializer, ArtistSerializer
 from melowdee.settings import ARTISTS_PER_PAGE
@@ -9,13 +13,16 @@ from django.core.cache import cache
 
 
 @csrf_exempt
-def artists(request):
+@api_view(['POST', 'GET'])
+@throttle_classes([UserRateThrottle])
+def artists(request: WSGIRequest) -> JsonResponse:
     """
     add a song
     """
 
     if request.method == 'POST':
-        if 'add' in request.path:
+
+        if 'create' in request.path:
             data = JSONParser().parse(request)
             serializer = AddArtistSerializer(data=data)
             if serializer and serializer.is_valid():
