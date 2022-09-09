@@ -8,6 +8,7 @@ click
 django-cors-headers
 django-extensions
 djangorestframework
+djangorestframework-simplejwt
 idna
 numerapi
 numpy

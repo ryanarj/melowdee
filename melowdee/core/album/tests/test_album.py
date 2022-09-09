@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIRequestFactory
 
 from melowdee.core.album.models import Album
-from melowdee.core.album.views import add_album, all_albums_for_artist
+from melowdee.core.album.views import add_album, get_albums_for_artist
 from melowdee.core.artist.models import Artist
 
 
@@ -41,13 +41,10 @@ class AlbumTestCase(TestCase):
         )
         add_album(request)
 
-        request = factory.post(
-            '/all_albums_for_artist/',
-            {
-                'id': artist.id
-            },
+        request = factory.get(
+            f'/get_albums_for_artist?artist_id={artist.id}',
             format='json'
         )
-        response = all_albums_for_artist(request)
+        response = get_albums_for_artist(request)
         assert response.status_code == 200
         assert album in str(response._container)

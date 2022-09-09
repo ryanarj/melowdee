@@ -2,12 +2,15 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.core.cache import cache
-
+from rest_framework.decorators import throttle_classes, api_view
+from rest_framework.throttling import UserRateThrottle
 from melowdee.core.song.models import Song
 from melowdee.core.song.serializer import SongSeriaizer, SongSerializer, SongLyricsSerializer
 
 
 @csrf_exempt
+@api_view(['POST'])
+@throttle_classes([UserRateThrottle])
 def add_song(request):
     """
     add a song
@@ -23,6 +26,8 @@ def add_song(request):
 
 
 @csrf_exempt
+@api_view(['POST'])
+@throttle_classes([UserRateThrottle])
 def all_songs_for_album(request):
     """
     send all artist's albums
@@ -44,6 +49,8 @@ def all_songs_for_album(request):
 
 
 @csrf_exempt
+@api_view(['POST'])
+@throttle_classes([UserRateThrottle])
 def grab_song_data(request):
     """
     send all artist's albums
@@ -64,6 +71,8 @@ def grab_song_data(request):
             return JsonResponse(song_data, safe=False)
 
 @csrf_exempt
+@api_view(['GET'])
+@throttle_classes([UserRateThrottle])
 def song_search(request):
     """
     search song

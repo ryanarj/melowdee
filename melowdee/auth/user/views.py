@@ -2,7 +2,6 @@ from django.db import transaction
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-
 from melowdee.auth.user.models import UserMetadata
 from melowdee.auth.user.serializers import UserSerializer, UserSigninSerializer
 
