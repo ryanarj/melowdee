@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIRequestFactory
 
 from melowdee.core.article.models import Article
-from melowdee.core.article.views import add_article
+from melowdee.core.article.views import articles
 from melowdee.core.artist.models import Artist
 
 
@@ -18,17 +18,17 @@ class AlbumTestCase(TestCase):
                       'non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
 
         artist = Artist.objects.create(name='Metallica')
-        request = factory.post('/add_article/', {
+        request = factory.post('/articles/add/', {
                 'title': title,
                 'description': description,
                 'artist_id': artist.id
             }, format='json'
         )
-        response = add_article(request)
+        response = articles(request)
 
-        article = Article.objects.filter(title=title, artist_id=artist.id)
-        assert article.exists() is True
-        assert article.count() == 1
-        assert article.first().title == title
-        assert article.first().description == description
+        article_q = Article.objects.filter(title=title, artist_id=artist.id)
+        assert article_q.exists() is True
+        assert article_q.count() == 1
+        assert article_q.first().title == title
+        assert article_q.first().description == description
         assert response.status_code == 201

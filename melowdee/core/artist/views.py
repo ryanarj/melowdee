@@ -9,58 +9,49 @@ from django.core.cache import cache
 
 
 @csrf_exempt
-def add_artist(request):
+def artists(request):
     """
     add a song
     """
 
     if request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = AddArtistSerializer(data=data)
-        if serializer and serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-
-
-@csrf_exempt
-def all_artists(request):
-    """
-    send all artists
-    """
-    if request.method == 'GET':
-        if cache.get('all_artist') is None:
-            all_arts = Artist.objects.all().order_by('id')
-            paginated = Paginator(all_arts, ARTISTS_PER_PAGE)
-            page = request.GET.get('page', 1)
-            artists = paginated.get_page(page)
-            serializer = AllArtistsSerializer(artists, many=True)
-            cache.set('all_artist', serializer.data)
-            return JsonResponse(serializer.data, safe=False)
-        else:
-            data = cache.get('all_artist')
-            return JsonResponse(data, safe=False)
-
-
-@csrf_exempt
-def grab_artist_data(request):
-    """
-    get a artists
-    """
-
-    if request.method == 'POST':
-        data = JSONParser().parse(request)
-        if cache.get(data.get('id')):
-            artist_data = cache.get(data.get('id'))
-            return JsonResponse(artist_data, status=201)
-        else:
-            serializer = ArtistSerializer(data=data)
+        if 'add' in request.path:
+            data = JSONParser().parse(request)
+            serializer = AddArtistSerializer(data=data)
             if serializer and serializer.is_valid():
-                artist = serializer.save()
-                data = {
-                    'name': artist.name,
-                    'about': artist.about,
-                }
-                cache.set(artist.id, data)
-                return JsonResponse(data, status=201)
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
             return JsonResponse(serializer.errors, status=400)
+
+    if request.method == 'GET':
+
+        if 'artist_id' in request.path:
+
+            data = JSONParser().parse(request)
+            if cache.get(data.get('id')):
+                artist_data = cache.get(data.get('id'))
+                return JsonResponse(artist_data, status=201)
+            else:
+                serializer = ArtistSerializer(data=data)
+                if serializer and serializer.is_valid():
+                    artist = serializer.save()
+                    data = {
+                        'name': artist.name,
+                        'about': artist.about,
+                    }
+                    cache.set(artist.id, data)
+                    return JsonResponse(data, status=201)
+                return JsonResponse(serializer.errors, status=400)
+        else:
+
+            if cache.get('all_artist') is None:
+                all_arts = Artist.objects.all().order_by('id')
+                paginated = Paginator(all_arts, ARTISTS_PER_PAGE)
+                page = request.GET.get('page', 1)
+                artists = paginated.get_page(page)
+                serializer = AllArtistsSerializer(artists, many=True)
+                cache.set('all_artist', serializer.data)
+                return JsonResponse(serializer.data, safe=False)
+            else:
+                data = cache.get('all_artist')
+                return JsonResponse(data, safe=False)

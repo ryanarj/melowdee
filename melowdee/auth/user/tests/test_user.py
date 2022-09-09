@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIRequestFactory
-from melowdee.auth.user.views import user_signup, user_sign_in
+from melowdee.auth.user.views import users
 
 
 class UserTestCase(TestCase):
@@ -10,13 +10,13 @@ class UserTestCase(TestCase):
         factory = APIRequestFactory()
         test_username = 'Test23'
         test_email = 'Test23@melowdee.com'
-        request = factory.post('/user_signup/', {
+        request = factory.post('/users/create/', {
             'username': test_username,
             'email': test_email,
             'age': 1,
             'password': 'test'
         }, format='json')
-        response = user_signup(request)
+        response = users(request)
 
         user = User.objects.filter(username=test_username, email=test_email)
         assert user.exists() is True
@@ -27,17 +27,17 @@ class UserTestCase(TestCase):
         test_username = 'Test23'
         test_email = 'Test23@melowdee.com'
 
-        request = factory.post('/user_signup/', {
+        request = factory.post('/user/create_user/', {
             'username': test_username,
             'email': test_email,
             'age': 1,
             'password': 'test'
         }, format='json')
-        user_signup(request)
+        users(request)
 
-        request = factory.post('/user_sign_in/', {
+        request = factory.post('/user/sign_in/', {
             'email': test_email,
             'password': 'test'
         }, format='json')
-        response = user_sign_in(request)
+        response = users(request)
         assert response.status_code == 201

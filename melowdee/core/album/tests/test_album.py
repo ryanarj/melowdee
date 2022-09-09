@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIRequestFactory
 
 from melowdee.core.album.models import Album
-from melowdee.core.album.views import add_album, get_albums_for_artist
+from melowdee.core.album.views import albums
 from melowdee.core.artist.models import Artist
 
 
@@ -13,13 +13,13 @@ class AlbumTestCase(TestCase):
         album_name = 'Ride the lighting'
         about = 'Greatness'
         artist = Artist.objects.create(name='Metallica')
-        request = factory.post('/add_album/', {
+        request = factory.post('/albums/add_album/', {
                 'name': album_name,
                 'about': about,
                 'artist_id': artist.id
             }, format='json'
         )
-        response = add_album(request)
+        response = albums(request)
 
         album = Album.objects.filter(name=album_name)
         assert album.exists() is True
@@ -33,18 +33,20 @@ class AlbumTestCase(TestCase):
         album = 'Ride the lighting'
         about = 'Greatness'
         artist = Artist.objects.create(name='Metallica')
-        request = factory.post('/add_album/', {
+        request = factory.post('/albums/add_album/', {
                 'name': album,
                 'about': about,
                 'artist_id': artist.id
             }, format='json'
         )
-        add_album(request)
+
+        albums(request)
 
         request = factory.get(
-            f'/get_albums_for_artist?artist_id={artist.id}',
+            f'/albums?artist_id={artist.id}',
             format='json'
         )
-        response = get_albums_for_artist(request)
+        response = albums(request)
         assert response.status_code == 200
+        print(response._container)
         assert album in str(response._container)
