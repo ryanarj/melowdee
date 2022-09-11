@@ -30,9 +30,11 @@ def albums(request: WSGIRequest) -> JsonResponse:
                     cache.set(f'{artist_id}_artist_data', album_serializer.data)
                     return JsonResponse(album_serializer.data, safe=False)
                 else:
-                    return JsonResponse(album_data, safe=False)
+                    return JsonResponse(album_data, safe=False,  status=200)
             else:
                 return JsonResponse(album_data, safe=False)
+        else:
+            return JsonResponse(data={'error': 'artist_id not in request'}, status=400)
 
     if request.method == 'POST':
 

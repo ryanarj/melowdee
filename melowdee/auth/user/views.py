@@ -41,5 +41,5 @@ def users(request: WSGIRequest) -> JsonResponse:
                     with transaction.atomic():
                         user_meta.last_login_at = arrow.utcnow().datetime
                         user_meta.save()
-                    return JsonResponse(data, status=201)
+                    return JsonResponse(data, status=200)
             return JsonResponse(user_sign_in_serializer.errors, status=400)

@@ -37,7 +37,7 @@ def artists(request: WSGIRequest) -> JsonResponse:
             data = JSONParser().parse(request)
             if cache.get(data.get('id')):
                 artist_data = cache.get(data.get('id'))
-                return JsonResponse(artist_data, status=201)
+                return JsonResponse(artist_data, status=200)
             else:
                 serializer = ArtistSerializer(data=data)
                 if serializer and serializer.is_valid():
@@ -47,7 +47,7 @@ def artists(request: WSGIRequest) -> JsonResponse:
                         'about': artist.about,
                     }
                     cache.set(artist.id, data)
-                    return JsonResponse(data, status=201)
+                    return JsonResponse(data, status=200)
                 return JsonResponse(serializer.errors, status=400)
         else:
 
@@ -58,7 +58,7 @@ def artists(request: WSGIRequest) -> JsonResponse:
                 artists = paginated.get_page(page)
                 serializer = AllArtistsSerializer(artists, many=True)
                 cache.set('all_artist', serializer.data)
-                return JsonResponse(serializer.data, safe=False)
+                return JsonResponse(serializer.data, safe=False, status=200)
             else:
                 data = cache.get('all_artist')
-                return JsonResponse(data, safe=False)
+                return JsonResponse(data, safe=False, status=200)

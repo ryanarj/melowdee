@@ -38,9 +38,9 @@ def songs(request: WSGIRequest) -> JsonResponse:
                 if songs_q:
                     song_serializer: SongSerializer = SongSerializer(songs_q, many=True)
                     cache.set(f'{album_id}_album_data', song_serializer.data)
-                    return JsonResponse(song_serializer.data, safe=False)
+                    return JsonResponse(song_serializer.data, safe=False, status=200)
                 else:
-                    return JsonResponse(album_data, safe=False)
+                    return JsonResponse(data={'error': 'Album Not found'}, safe=False, status=404)
             else:
                 return JsonResponse(album_data, safe=False)
 
@@ -54,7 +54,7 @@ def songs(request: WSGIRequest) -> JsonResponse:
                     cache.set(f'{song_id}_song_data', song_lyrics_serializer.data)
                     return JsonResponse(song_lyrics_serializer.data, safe=False)
                 else:
-                    return JsonResponse(song_data, safe=False)
+                    return JsonResponse(data={'error': 'Song Not found'}, safe=False, status=404)
             else:
                 return JsonResponse(song_data, safe=False)
 
