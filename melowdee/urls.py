@@ -24,10 +24,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Melowdee API",
         default_version='v1',
-        description="Welcome to the world of Jaseci",
-        terms_of_service="https://www.jaseci.org",
-        contact=openapi.Contact(email="jason@jaseci.org"),
-        license=openapi.License(name="Awesome IP"),
+        description="Melowdee",
     ),
     public=True,
     permission_classes=[permissions.AllowAny,],
