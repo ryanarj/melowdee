@@ -9,6 +9,8 @@ django-cors-headers
 django-extensions
 djangorestframework
 djangorestframework-simplejwt
+django-rest-swagger
+drf-yasg
 idna
 numerapi
 numpy
