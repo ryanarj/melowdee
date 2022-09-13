@@ -11,9 +11,12 @@
 
 ##  Testing
     
-    ### python manage.py test
+    python manage.py test
 
 ##  Authors
   
     @ryanarj
+    
+## Design
 
+![Melowdee Diagram drawio(1)](https://user-images.githubusercontent.com/25094515/189995942-5965711e-1c57-44bc-b97d-d4c5ba4dd43a.png)
