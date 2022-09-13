@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIRequestFactory
 
 from melowdee.core.article.models import Article
-from melowdee.core.article.views import articles
+from melowdee.core.article.views import ArticleViewSet
 from melowdee.core.artist.models import Artist
 
 
@@ -24,7 +24,7 @@ class AlbumTestCase(TestCase):
                 'artist_id': artist.id
             }, format='json'
         )
-        response = articles(request)
+        response = ArticleViewSet().articles(request)
 
         article_q = Article.objects.filter(title=title, artist_id=artist.id)
         assert article_q.exists() is True

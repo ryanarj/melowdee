@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIRequestFactory
 
 from melowdee.core.artist.models import Artist
-from melowdee.core.artist.views import artists
+from melowdee.core.artist.views import ArtistViewSet
 
 
 class ArtistTestCase(TestCase):
@@ -11,11 +11,11 @@ class ArtistTestCase(TestCase):
         factory = APIRequestFactory()
         artist = 'The Strokes'
         about = 'Greatness'
-        request = factory.post('/artists/create/', {
+        request = factory.post('/artists/', {
             'name': artist,
             'about': about,
         }, format='json')
-        response = artists(request)
+        response = ArtistViewSet().artists(request)
 
         art = Artist.objects.filter(name=artist)
         assert art.exists() is True
@@ -27,14 +27,14 @@ class ArtistTestCase(TestCase):
         artist = 'Biggie Smalls'
         about = 'Greatness'
 
-        request = factory.post('/artists/create/', {
+        request = factory.post('/artists/', {
             'name': artist,
             'about': about,
         }, format='json')
-        artists(request)
+        ArtistViewSet().artists(request)
 
-        request = factory.get('/artists/', format='json')
-        response = artists(request)
+        request = factory.get('/artists/all', format='json')
+        response = ArtistViewSet().all_artists(request)
 
         assert response.status_code == 200
         assert artist in str(response._container)

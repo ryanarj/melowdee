@@ -1,8 +1,9 @@
+from typing import Optional
+
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view, throttle_classes
+from rest_framework import viewsets
 from rest_framework.parsers import JSONParser
 from rest_framework.throttling import UserRateThrottle
 
@@ -12,17 +13,13 @@ from melowdee.settings import ARTISTS_PER_PAGE
 from django.core.cache import cache
 
 
-@csrf_exempt
-@api_view(['POST', 'GET'])
-@throttle_classes([UserRateThrottle])
-def artists(request: WSGIRequest) -> JsonResponse:
-    """
-    add a song
-    """
+class ArtistViewSet(viewsets.ModelViewSet):
+    throttle_classes = [UserRateThrottle]
 
-    if request.method == 'POST':
+    @staticmethod
+    def artists(request: WSGIRequest) -> Optional[JsonResponse]:
 
-        if 'create' in request.path:
+        if request.method == 'POST':
             data = JSONParser().parse(request)
             serializer = AddArtistSerializer(data=data)
             if serializer and serializer.is_valid():
@@ -30,9 +27,7 @@ def artists(request: WSGIRequest) -> JsonResponse:
                 return JsonResponse(serializer.data, status=201)
             return JsonResponse(serializer.errors, status=400)
 
-    if request.method == 'GET':
-
-        if 'artist_id' in request.path:
+        if request.method == 'GET':
 
             data = JSONParser().parse(request)
             if cache.get(data.get('id')):
@@ -49,16 +44,17 @@ def artists(request: WSGIRequest) -> JsonResponse:
                     cache.set(artist.id, data)
                     return JsonResponse(data, status=200)
                 return JsonResponse(serializer.errors, status=400)
-        else:
 
-            if cache.get('all_artist') is None:
-                all_arts = Artist.objects.all().order_by('id')
-                paginated = Paginator(all_arts, ARTISTS_PER_PAGE)
-                page = request.GET.get('page', 1)
-                artists = paginated.get_page(page)
-                serializer = AllArtistsSerializer(artists, many=True)
-                cache.set('all_artist', serializer.data)
-                return JsonResponse(serializer.data, safe=False, status=200)
-            else:
-                data = cache.get('all_artist')
-                return JsonResponse(data, safe=False, status=200)
+    @staticmethod
+    def all_artists(request: WSGIRequest) -> Optional[JsonResponse]:
+        if cache.get('all_artist') is None:
+            all_arts = Artist.objects.all().order_by('id')
+            paginated = Paginator(all_arts, ARTISTS_PER_PAGE)
+            page = request.GET.get('page', 1)
+            artists = paginated.get_page(page)
+            serializer = AllArtistsSerializer(artists, many=True)
+            cache.set('all_artist', serializer.data)
+            return JsonResponse(serializer.data, safe=False, status=200)
+        else:
+            data = cache.get('all_artist')
+            return JsonResponse(data, safe=False, status=200)

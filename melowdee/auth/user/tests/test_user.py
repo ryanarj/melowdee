@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIRequestFactory
-from melowdee.auth.user.views import users
+from melowdee.auth.user.views import UserViewSet
 
 
 class UserTestCase(TestCase):
@@ -10,13 +10,13 @@ class UserTestCase(TestCase):
         factory = APIRequestFactory()
         test_username = 'Test23'
         test_email = 'Test23@melowdee.com'
-        request = factory.post('/users/create/', {
+        request = factory.post('/users/', {
             'username': test_username,
             'email': test_email,
             'age': 1,
             'password': 'test'
         }, format='json')
-        response = users(request)
+        response = UserViewSet().users(request)
 
         user = User.objects.filter(username=test_username, email=test_email)
         assert user.exists() is True
@@ -27,17 +27,17 @@ class UserTestCase(TestCase):
         test_username = 'Test23'
         test_email = 'Test23@melowdee.com'
 
-        request = factory.post('/user/create_user/', {
+        request = factory.post('/users/', {
             'username': test_username,
             'email': test_email,
             'age': 1,
             'password': 'test'
         }, format='json')
-        users(request)
+        UserViewSet().users(request)
 
-        request = factory.post('/user/sign_in/', {
+        request = factory.post('/users/sign_in/', {
             'email': test_email,
             'password': 'test'
         }, format='json')
-        response = users(request)
-        assert response.status_code == 201
+        response = UserViewSet().user_sign_in(request)
+        assert response.status_code == 200

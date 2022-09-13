@@ -1,6 +1,7 @@
 from django.urls import path
-from melowdee.core.artist import views
+from melowdee.core.artist.views import ArtistViewSet
 
 urlpatterns = [
-    path('artists', views.artists),
+    path('artists', ArtistViewSet().artists),
+    path('artists/all', ArtistViewSet().all_artists),
 ]

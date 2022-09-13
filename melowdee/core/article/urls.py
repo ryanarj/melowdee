@@ -1,7 +1,7 @@
 from django.urls import path
-from melowdee.core.article import views
+from melowdee.core.article.views import ArticleViewSet
 
 
 urlpatterns = [
-    path('articles', views.articles)
+    path('articles', ArticleViewSet().articles)
 ]

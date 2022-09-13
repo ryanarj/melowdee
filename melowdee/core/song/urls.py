@@ -1,7 +1,8 @@
 from django.urls import path
-from melowdee.core.song import views
+from melowdee.core.song.views import SongViewSet
 
 
 urlpatterns = [
-    path('songs', views.songs)
+    path('songs', SongViewSet().songs),
+    path('song_search', SongViewSet().song_search)
 ]

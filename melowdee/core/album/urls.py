@@ -1,7 +1,7 @@
 from django.urls import path
-from melowdee.core.album import views
+from melowdee.core.album.views import AlbumViewSet
 
 
 urlpatterns = [
-    path('albums', views.albums),
+    path('albums', AlbumViewSet().albums),
 ]
