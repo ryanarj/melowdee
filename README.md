@@ -1,6 +1,6 @@
 #   Melowdee Backend Project
     
-    A simple django CRUD restful backend to support a frontend. Utilizes Redis for cache and is Dockerized.
+A simple django CRUD restful backend to support a frontend. Utilizes Redis for cache and is Dockerized.
 
 ##  Installing
     
