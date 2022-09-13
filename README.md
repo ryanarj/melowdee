@@ -8,6 +8,11 @@ A simple django CRUD restful backend to support a frontend. Utilizes Redis for c
     2.  Create a python vitural environment
     3.  python -m pip install
     4.  python manage.py runserver
+    
+##  Running with Docker
+    1. Install Docker 
+    2. Run docker-compose build
+    3. Run docker-compose up
 
 ##  Testing
     
@@ -15,7 +20,7 @@ A simple django CRUD restful backend to support a frontend. Utilizes Redis for c
 
 ##  Authors
   
-    @ryanarj
+@ryanarj
     
 ## Design
 
