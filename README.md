@@ -24,4 +24,4 @@ A simple django CRUD restful backend to support a frontend. Utilizes Redis for c
     
 ## Design
 
-![Melowdee Diagram drawio(1)](https://user-images.githubusercontent.com/25094515/189995942-5965711e-1c57-44bc-b97d-d4c5ba4dd43a.png)
+![Melowdee Diagram drawio(2)](https://user-images.githubusercontent.com/25094515/189997445-3094fa21-91b2-408e-9648-3ad49bea906c.png)
