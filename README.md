@@ -1,6 +1,6 @@
 #   Melowdee Backend Project
     
-A simple django CRUD restful backend to support a frontend. Utilizes Redis for cache and is Dockerized.
+A simple django restful backend to support a frontend. Utilizes Redis for cache and is Dockerized.
 
 ##  Installing
     
@@ -8,6 +8,11 @@ A simple django CRUD restful backend to support a frontend. Utilizes Redis for c
     2.  Create a python vitural environment
     3.  python -m pip install
     4.  python manage.py runserver
+    
+##  Running with Docker
+    1. Install Docker 
+    2. Run docker-compose build
+    3. Run docker-compose up
 
 ##  Testing
     
@@ -15,8 +20,8 @@ A simple django CRUD restful backend to support a frontend. Utilizes Redis for c
 
 ##  Authors
   
-    @ryanarj
+@ryanarj
     
 ## Design
 
-![Melowdee Diagram drawio(1)](https://user-images.githubusercontent.com/25094515/189995942-5965711e-1c57-44bc-b97d-d4c5ba4dd43a.png)
+![Melowdee Diagram drawio(2)](https://user-images.githubusercontent.com/25094515/189997445-3094fa21-91b2-408e-9648-3ad49bea906c.png)
