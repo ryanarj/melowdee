@@ -58,3 +58,19 @@ class SongViewSet(viewsets.ModelViewSet):
                 return JsonResponse({}, safe=False)
         else:
             return JsonResponse({}, safe=False)
+
+    @staticmethod
+    def from_album(request: WSGIRequest) -> Optional[JsonResponse]:
+
+        album_id: Optional[str] = request.GET.get('album_id')
+        album_song_data: Optional[dict] = cache.get(f'{album_id}_song_data')
+        if album_song_data is None:
+            song_q: QuerySet[Song] = Song.objects.filter(album=album_id)
+            if song_q:
+                song_serializer: SongSerializer = SongSerializer(song_q, many=True)
+                cache.set(f'{album_id}_song_data', song_serializer.data)
+                return JsonResponse(song_serializer.data, safe=False)
+            else:
+                return JsonResponse(data={'error': 'Songs for album found'}, safe=False, status=404)
+        else:
+            return JsonResponse(album_song_data, safe=False)

@@ -4,5 +4,6 @@ from melowdee.core.song.views import SongViewSet
 
 urlpatterns = [
     path('songs', SongViewSet().songs),
-    path('song_search', SongViewSet().song_search)
+    path('songs/search', SongViewSet().song_search),
+    path('songs/from_album', SongViewSet().from_album)
 ]

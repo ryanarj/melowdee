@@ -28,22 +28,26 @@ class ArtistViewSet(viewsets.ModelViewSet):
             return JsonResponse(serializer.errors, status=400)
 
         if request.method == 'GET':
+            print(request.GET.get('artist_id'))
 
-            data = JSONParser().parse(request)
-            if cache.get(data.get('id')):
-                artist_data = cache.get(data.get('id'))
+            artist_id: Optional[str] = request.GET.get('artist_id')
+            if cache.get(artist_id):
+                artist_data = cache.get(artist_id)
                 return JsonResponse(artist_data, status=200)
             else:
-                serializer = ArtistSerializer(data=data)
-                if serializer and serializer.is_valid():
-                    artist = serializer.save()
-                    data = {
-                        'name': artist.name,
-                        'about': artist.about,
-                    }
-                    cache.set(artist.id, data)
-                    return JsonResponse(data, status=200)
-                return JsonResponse(serializer.errors, status=400)
+                artist = Artist.objects.filter(id=artist_id).first()
+                if artist:
+                    serializer = ArtistSerializer(
+                        data={
+                            'name': artist.name,
+                            'id': artist.id,
+                            'about': artist.about
+                        }
+                    )
+                    if serializer and serializer.is_valid():
+                        cache.set(artist_id, serializer.data)
+                        return JsonResponse(serializer.data, status=200)
+                    return JsonResponse(serializer.errors, status=400)
 
     @staticmethod
     def all_artists(request: WSGIRequest) -> Optional[JsonResponse]:
