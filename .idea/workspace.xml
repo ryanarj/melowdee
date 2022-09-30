@@ -2,12 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="abf9d456-ddea-42de-bd8e-ebc83e3aa588" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/melowdee/core/song/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/melowdee/core/song/templates/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/melowdee/core/song/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/melowdee/core/song/templates/result.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/melowdee/core/artist/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/core/artist/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/melowdee/core/artist/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/core/artist/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/melowdee/core/artist/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/core/artist/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/melowdee/core/song/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/core/song/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/melowdee/core/song/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/core/song/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/melowdee/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +49,10 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/melowdee/core/song/templates" />
+      <recent name="$PROJECT_DIR$/melowdee/core/song" />
+      <recent name="$PROJECT_DIR$/melowdee/core" />
+      <recent name="$PROJECT_DIR$/melowdee" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>

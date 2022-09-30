@@ -35,3 +35,14 @@ class ArtistSerializer(serializers.ModelSerializer):
         model = Artist
         fields = '__all__'
 
+
+class ArtistNameSerializer(serializers.Serializer):
+    name = serializers.CharField(allow_null=False)
+
+    def create(self, validated_data):
+        name = validated_data.get('name')
+        artist = Artist.objects.filter(name=name).exists()
+        if artist:
+            return artist
+        else:
+            print('Artist does not exists')

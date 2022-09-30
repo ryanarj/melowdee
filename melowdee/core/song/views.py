@@ -3,10 +3,13 @@ from typing import Optional
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models.query import QuerySet
 from django.http import JsonResponse
+from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.parsers import JSONParser
 from django.core.cache import cache
 from rest_framework.throttling import UserRateThrottle
+
+from melowdee.core.song.forms import InputForm, URLForm
 from melowdee.core.song.models import Song
 from melowdee.core.song.serializer import SongSeriaizer, SongSerializer, SongLyricsSerializer
 
@@ -74,3 +77,10 @@ class SongViewSet(viewsets.ModelViewSet):
                 return JsonResponse(data={'error': 'Songs for album found'}, safe=False, status=404)
         else:
             return JsonResponse(album_song_data, safe=False)
+
+    @staticmethod
+    def index(request: WSGIRequest):
+        context = {}
+        context['form1'] = InputForm()
+        context['form2'] = URLForm()
+        return render(request, "index.html", context)

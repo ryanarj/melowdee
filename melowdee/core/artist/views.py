@@ -3,12 +3,15 @@ from typing import Optional
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.parsers import JSONParser
 from rest_framework.throttling import UserRateThrottle
 
 from melowdee.core.artist.models import Artist
-from melowdee.core.artist.serializers import AddArtistSerializer, AllArtistsSerializer, ArtistSerializer
+from melowdee.core.artist.serializers import AddArtistSerializer, AllArtistsSerializer, ArtistSerializer, \
+    ArtistNameSerializer
+from melowdee.core.song.forms import InputForm
 from melowdee.settings import ARTISTS_PER_PAGE
 from django.core.cache import cache
 
@@ -28,8 +31,6 @@ class ArtistViewSet(viewsets.ModelViewSet):
             return JsonResponse(serializer.errors, status=400)
 
         if request.method == 'GET':
-            print(request.GET.get('artist_id'))
-
             artist_id: Optional[str] = request.GET.get('artist_id')
             if cache.get(artist_id):
                 artist_data = cache.get(artist_id)
@@ -62,3 +63,20 @@ class ArtistViewSet(viewsets.ModelViewSet):
         else:
             data = cache.get('all_artist')
             return JsonResponse(data, safe=False, status=200)
+
+    @staticmethod
+    def artist_by_name(request):
+        form = InputForm(request.POST)
+        if form.is_valid():
+            artist = Artist.objects.filter(name=form.cleaned_data['artist_name']).first()
+            if artist:
+                return render(
+                    request,
+                    'result.html',
+                    {'form': form, 'artist_name': artist.name})
+            else:
+                return render(
+                    request,
+                    'index.html',
+                    {'artist_name': form.cleaned_data['artist_name']}
+                )

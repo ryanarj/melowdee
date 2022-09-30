@@ -1,0 +1,14 @@
+<form action="/artists/artist_by_name"  method = "post">
+    {% csrf_token %}
+    {{form1 }}
+    <text id="artist_name" type="text" name="artist_name" value="{{ artist_name }}">
+    <input type="submit" value="OK">
+</form>
+
+
+<form action=""  method = "post">
+    {% csrf_token %}
+    {{form2 }}
+    <text id="url" type="text" name="url" value="{{ url }}">
+    <input type="submit" value="OK">
+</form>
