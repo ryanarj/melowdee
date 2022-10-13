@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets
 from rest_framework.parsers import JSONParser
 from rest_framework.throttling import UserRateThrottle
-from melowdee.core.wallet.serializer import WalletSeriaizer
+from melowdee.core.wallet.serializer import WalletSerializer
 
 class WalletViewSet(viewsets.ModelViewSet):
 
@@ -19,7 +19,7 @@ class WalletViewSet(viewsets.ModelViewSet):
 
         if request.method == 'POST':
             data = JSONParser().parse(request)
-            serializer = WalletSeriaizer(data=data)
+            serializer = WalletSerializer(data=data)
             if serializer and serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data, status=201)

@@ -2,18 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="abf9d456-ddea-42de-bd8e-ebc83e3aa588" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/melowdee/core/wallet/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/melowdee/core/wallet/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/melowdee/core/wallet/serializer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/melowdee/core/wallet/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/melowdee/core/wallet/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/melowdee/external/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/melowdee/external/wallet_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/melowdee.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/melowdee.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/melowdee/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/melowdee/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/melowdee/auth/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/auth/user/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/melowdee/auth/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/auth/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/melowdee/core/wallet/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/core/wallet/serializer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/melowdee/core/wallet/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/core/wallet/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

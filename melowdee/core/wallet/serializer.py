@@ -7,7 +7,7 @@ import asyncio
 from melowdee.external.wallet_service import generate_wallet
 
 
-class WalletSeriaizer(serializers.Serializer):
+class WalletSerializer(serializers.Serializer):
     user_id = serializers.CharField(allow_null=False)
 
     def create(self, validated_data):
