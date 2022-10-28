@@ -11,7 +11,7 @@ from rest_framework.throttling import UserRateThrottle
 
 from melowdee.core.song.forms import InputForm, URLForm
 from melowdee.core.song.models import Song
-from melowdee.core.song.serializer import SongSeriaizer, SongSerializer, SongLyricsSerializer
+from melowdee.core.song.serializer import SongSerializer, NewSongSerializer, SongLyricsSerializer
 
 
 class SongViewSet(viewsets.ModelViewSet):
@@ -23,7 +23,7 @@ class SongViewSet(viewsets.ModelViewSet):
 
         if request.method == 'POST':
             data = JSONParser().parse(request)
-            serializer = SongSeriaizer(data=data)
+            serializer = NewSongSerializer(data=data)
             if serializer and serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data, status=201)
@@ -70,7 +70,7 @@ class SongViewSet(viewsets.ModelViewSet):
         if album_song_data is None:
             song_q: QuerySet[Song] = Song.objects.filter(album=album_id)
             if song_q:
-                song_serializer: SongSerializer = SongSerializer(song_q, many=True)
+                song_serializer: NewSongSerializer = NewSongSerializer(song_q, many=True)
                 cache.set(f'{album_id}_song_data', song_serializer.data)
                 return JsonResponse(song_serializer.data, safe=False)
             else:

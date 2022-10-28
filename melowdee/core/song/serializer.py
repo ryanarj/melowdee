@@ -5,7 +5,7 @@ from melowdee.core.album.models import Album
 from melowdee.core.song.models import Song
 
 
-class SongSeriaizer(serializers.Serializer):
+class NewSongSerializer(serializers.Serializer):
     name = serializers.CharField(allow_null=False)
     album_id = serializers.CharField(allow_null=False)
     verse_one = serializers.CharField(allow_null=False)
