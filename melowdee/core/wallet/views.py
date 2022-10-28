@@ -24,3 +24,16 @@ class WalletViewSet(viewsets.ModelViewSet):
                 serializer.save()
                 return JsonResponse(serializer.data, status=201)
             return JsonResponse(serializer.errors, status=400)
+
+
+    @method_decorator(csrf_exempt, name='dispatch')
+    @staticmethod
+    def checkBalance(request: WSGIRequest) -> Optional[JsonResponse]:
+
+        if request.method == 'POST':
+            data = JSONParser().parse(request)
+            serializer = WalletSerializer(data=data)
+            if serializer and serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
