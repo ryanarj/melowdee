@@ -34,7 +34,7 @@ class WalletSerializer(serializers.Serializer):
                 return wallet
 
 
-class BalanceSerializer(serializers.Serializer, ABC):
+class BalanceSerializer(serializers.Serializer):
     user_id = serializers.CharField(allow_null=False)
 
     def create(self, validated_data: dict) -> Optional[dict]:
