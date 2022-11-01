@@ -10,7 +10,7 @@ from melowdee.core.wallet.serializer import BalanceSerializer
 from melowdee.core.wallet.views import WalletViewSet
 
 
-class CheckBalance(TestCase):
+class TestCheckBalance(TestCase):
 
     test_user = None
     test_address = None
