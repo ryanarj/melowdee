@@ -1,5 +1,5 @@
 from typing import Optional
-
+import logging
 import arrow
 from django.db import transaction
 from rest_framework import serializers
@@ -12,6 +12,8 @@ from django.core.cache import cache
 
 from melowdee.external.wallet_service import generate_wallet, check_balance
 
+
+logger = logging.getLogger('main')
 
 class WalletSerializer(serializers.Serializer):
     user_id = serializers.CharField(allow_null=False)
@@ -37,10 +39,14 @@ class BalanceSerializer(serializers.Serializer):
     user_id = serializers.CharField(allow_null=False)
 
     def create(self, validated_data: dict) -> Optional[dict]:
+        logger.info('BalanceSerializer_create')
         user_id = validated_data.get('user_id')
         wallet_bal_cache_dict = cache.get(wallet_balance(user_id=user_id))
 
         if wallet_bal_cache_dict:
+            logger.warning('BalanceSerializer_create_wallet_bal_cache_dict', extra={
+                'wallet_bal_cache_dict': wallet_bal_cache_dict
+            })
             wallet_bal_cache_dict = self.get_from_cache(cache_dict=wallet_bal_cache_dict, user_id=user_id)
             cache.set(wallet_balance(user_id=user_id), wallet_bal_cache_dict)
 
@@ -55,10 +61,13 @@ class BalanceSerializer(serializers.Serializer):
         if cache_dict:
             updated_at_date = cache_dict['updated_at']
 
-            if updated_at_date < arrow.utcnow().shift(minutes=-5).datetime:
+            if updated_at_date < arrow.utcnow().shift(minutes=-1).datetime:
                 data = asyncio.run(check_balance(cache_dict['address']))
 
                 if data:
+                    logger.warning('BalanceSerializer_get_from_cache', extra={
+                        'data': data
+                    })
                     wallet = Wallet.objects.filter(user_id=user_id).first()
 
                     with transaction.atomic():
@@ -70,8 +79,10 @@ class BalanceSerializer(serializers.Serializer):
                     cache_dict['updated_at'] = wallet.updated_at
 
                 else:
-                    print(f'No Data from response, response_body: {data}')
-
+                    logger.error('BalanceSerializer_get_from_cache', extra={
+                        'error': 'No Data from response, response_body',
+                        'data': data
+                    })
         return cache_dict
 
     @staticmethod
