@@ -8,3 +8,6 @@
 2022-11-02 17:08:34,850-INFO-serializer-BalanceSerializer_get_from_cache
 2022-11-02 17:08:34,852-INFO-serializer-BalanceSerializer_create
 2022-11-02 17:08:34,852-INFO-serializer-BalanceSerializer_create_wallet_bal_cache_dict
+2022-11-02 17:24:57,589-INFO-serializer-BalanceSerializer_get_from_cache
+2022-11-02 17:24:57,592-INFO-serializer-BalanceSerializer_create
+2022-11-02 17:24:57,592-INFO-serializer-BalanceSerializer_create_wallet_bal_cache_dict

@@ -18,25 +18,36 @@ class UserViewSet(viewsets.ViewSet):
 
     throttle_classes = [AnonRateThrottle]
 
-    @method_decorator(csrf_exempt, name='dispatch')
+    @method_decorator(decorator=csrf_exempt, name='dispatch')
     @staticmethod
     def users(request: WSGIRequest) -> Optional[JsonResponse]:
 
-        data: Dict[str, str] = JSONParser().parse(request)
-        user_serializer: CreateUserSerializer = CreateUserSerializer(data=data)
+        data = JSONParser().parse(request)
+        user_serializer = CreateUserSerializer(data=data)
+
         if user_serializer.is_valid():
             user_serializer.save()
-            return JsonResponse(user_serializer.data, status=201)
-        return JsonResponse(user_serializer.errors, status=400)
+
+            return JsonResponse(
+                data=user_serializer.data,
+                status=201
+            )
+
+        return JsonResponse(
+            data=user_serializer.errors,
+            status=400
+        )
 
     @staticmethod
     def user_sign_in(request: WSGIRequest) -> Optional[JsonResponse]:
-        data: Dict[str, str] = JSONParser().parse(request)
-        user_sign_in_serializer: UserSigninSerializer = UserSigninSerializer(data=data)
+        data = JSONParser().parse(request)
+        user_sign_in_serializer = UserSigninSerializer(data=data)
+
         if user_sign_in_serializer.is_valid():
-            user: Optional[User] = user_sign_in_serializer.save()
+            user = user_sign_in_serializer.save()
+
             if user:
-                user_meta: UserMetadata = UserMetadata.objects.get(user_id=user)
+                user_meta = UserMetadata.objects.get(user_id=user)
                 data = {
                     'age': user_meta.age,
                     'username': user_meta.user.username,
@@ -44,5 +55,13 @@ class UserViewSet(viewsets.ViewSet):
                 with transaction.atomic():
                     user_meta.last_login_at = arrow.utcnow().datetime
                     user_meta.save()
-                return JsonResponse(data, status=200)
-        return JsonResponse(user_sign_in_serializer.errors, status=400)
+
+                return JsonResponse(
+                    data=data,
+                    status=200
+                )
+
+        return JsonResponse(
+            data=user_sign_in_serializer.errors,
+            status=400
+        )
