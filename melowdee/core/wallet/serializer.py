@@ -15,6 +15,7 @@ from melowdee.external.wallet_service import generate_wallet, check_balance
 
 logger = logging.getLogger('main')
 
+
 class WalletSerializer(serializers.Serializer):
     user_id = serializers.CharField(allow_null=False)
 
@@ -44,7 +45,7 @@ class BalanceSerializer(serializers.Serializer):
         wallet_bal_cache_dict = cache.get(wallet_balance(user_id=user_id))
 
         if wallet_bal_cache_dict:
-            logger.warning('BalanceSerializer_create_wallet_bal_cache_dict', extra={
+            logger.info('BalanceSerializer_create_wallet_bal_cache_dict', extra={
                 'wallet_bal_cache_dict': wallet_bal_cache_dict
             })
             wallet_bal_cache_dict = self.get_from_cache(cache_dict=wallet_bal_cache_dict, user_id=user_id)
@@ -65,7 +66,7 @@ class BalanceSerializer(serializers.Serializer):
                 data = asyncio.run(check_balance(cache_dict['address']))
 
                 if data:
-                    logger.warning('BalanceSerializer_get_from_cache', extra={
+                    logger.info('BalanceSerializer_get_from_cache', extra={
                         'data': data
                     })
                     wallet = Wallet.objects.filter(user_id=user_id).first()

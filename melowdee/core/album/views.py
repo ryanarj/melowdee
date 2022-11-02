@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.parsers import JSONParser
 from rest_framework.throttling import UserRateThrottle
-from melowdee.core.album.cache_keys import get_artist_id
+from melowdee.core.album.cache_keys import get_album_artist_data
 from melowdee.core.album.models import Album
 from melowdee.core.album.serializers import AddAlbumSerializer, AlbumSerializer
 from django.core.cache import cache
@@ -35,7 +35,7 @@ class AlbumViewSet(viewsets.ViewSet):
         artist_id_req = request.GET.get('artist_id').strip()
         artist_id = artist_id_req if artist_id_req is not None and artist_id_req != '' else None
 
-        cache_key = get_artist_id(artist_id)
+        cache_key = get_album_artist_data(artist_id)
         album_data = cache.get(cache_key)
 
         if album_data is None:
