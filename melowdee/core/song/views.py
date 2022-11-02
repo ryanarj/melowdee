@@ -88,9 +88,7 @@ class SongViewSet(viewsets.ModelViewSet):
 
     @staticmethod
     def index(request: WSGIRequest):
-        context = {}
-        context['form1'] = InputForm()
-        context['form2'] = URLForm()
+        context = {'form1': InputForm(), 'form2': URLForm()}
         return render(request, "index.html", context)
 
     @staticmethod
