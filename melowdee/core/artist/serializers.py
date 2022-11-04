@@ -41,8 +41,8 @@ class ArtistNameSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         name = validated_data.get('name')
-        artist = Artist.objects.filter(name=name).exists()
-        if artist:
-            return artist
+        artist = Artist.objects.filter(name=name)
+        if artist.exist():
+            return artist.first()
         else:
             print('Artist does not exists')
