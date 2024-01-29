@@ -8,7 +8,8 @@ from rest_framework import viewsets
 from rest_framework.parsers import JSONParser
 from rest_framework.throttling import UserRateThrottle
 from melowdee.core.wallet.serializer import WalletSerializer, BalanceSerializer
-
+from django.core.cache import cache
+from melowdee.core.wallet.models import Wallet
 
 class WalletViewSet(viewsets.ModelViewSet):
 
@@ -39,3 +40,24 @@ class WalletViewSet(viewsets.ModelViewSet):
                 data = {'balance': wallet.get('balance')}
                 return JsonResponse(data, status=201)
             return JsonResponse(serializer.errors, status=400)
+
+    @staticmethod
+    def get_artist_wallet(request: WSGIRequest) -> Optional[JsonResponse]:
+        artist_id = request.GET.get('artist_id')
+        if request.method == 'GET':
+            wallet = Wallet.objects.get(artist__id=artist_id).order_by('id')
+            if wallet:
+                data = {'wallet': wallet}
+                return JsonResponse(
+                    data,
+                    safe=False,
+                    status=200
+                )
+
+            else:
+                return JsonResponse(
+                    data={},
+                    safe=False,
+                    status=404
+                )
+

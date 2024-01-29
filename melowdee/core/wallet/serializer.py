@@ -4,6 +4,7 @@ import arrow
 from django.db import transaction
 from rest_framework import serializers
 
+from melowdee.core.artist.models import Artist
 from melowdee.core.wallet.cache_keys import wallet_balance
 from melowdee.core.wallet.models import Wallet
 from melowdee.auth.user.models import User
@@ -21,17 +22,20 @@ class WalletSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user_id = validated_data.get('user_id')
+        artist_id = validated_data.get('artist_id')
 
         wallet_q = Wallet.objects.filter(user_id=user_id)
 
         if not wallet_q:
 
             user = User.objects.filter(id=user_id).first()
-            data = asyncio.run(generate_wallet(user.password))
+            artist = Artist.objects.filter(id=artist_id).first()
+
+            # data = asyncio.run(generate_wallet(user.password))
 
             with transaction.atomic():
                 wallet = Wallet.objects.create(
-                    user=user, public=data.get('public'), private=data.get('private'), address=data.get('address')
+                    user=user, public=None, private=data.get('private'), address=data.get('address')
                 )
                 return wallet
 

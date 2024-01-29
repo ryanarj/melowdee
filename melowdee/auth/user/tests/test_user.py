@@ -17,10 +17,9 @@ class UserTestCase(TestCase):
             'password': 'test'
         }, format='json')
         response = UserViewSet().users(request)
-
         user = User.objects.filter(username=test_username, email=test_email)
-        assert user.exists() is True
-        assert response.status_code == 201
+        self.assertTrue(user.exists())
+        self.assertEqual(response.status_code, 201)
 
     def test_user_sign_in(self):
         factory = APIRequestFactory()
@@ -40,4 +39,4 @@ class UserTestCase(TestCase):
             'password': 'test'
         }, format='json')
         response = UserViewSet().user_sign_in(request)
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
