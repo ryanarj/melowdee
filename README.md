@@ -6,7 +6,7 @@ A simple django restful backend to support a frontend. Utilizes Redis for cache 
     
     1.  Clone repo
     2.  Create a python vitural environment
-    3.  python -m pip install
+    3.  pip install -r requirements.txt
     4.  python manage.py runserver
     
 ##  Running with Docker
