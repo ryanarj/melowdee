@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'melowdee.core.artist',
     'melowdee.core.song',
     'melowdee.core.wallet',
+    'melowdee.core.transaction',
     'corsheaders',
     'django_extensions',
     'melowdee.core.article',
+    'rest_framework_swagger',
 ]
 
 MIDDLEWARE = [
