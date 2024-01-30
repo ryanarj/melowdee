@@ -39,10 +39,10 @@ class UserViewSet(viewsets.ViewSet):
         )
 
     @staticmethod
+    @csrf_exempt
     def user_sign_in(request: WSGIRequest) -> Optional[JsonResponse]:
         data = JSONParser().parse(request)
         user_sign_in_serializer = UserSigninSerializer(data=data)
-
         if user_sign_in_serializer.is_valid():
             user = user_sign_in_serializer.save()
 
@@ -51,6 +51,7 @@ class UserViewSet(viewsets.ViewSet):
                 data = {
                     'age': user_meta.age,
                     'username': user_meta.user.username,
+                    'artist_id': user.id,
                 }
                 with transaction.atomic():
                     user_meta.last_login_at = arrow.utcnow().datetime

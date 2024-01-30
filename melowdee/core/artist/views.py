@@ -28,7 +28,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
         elif request.method == 'GET':
 
             if request.GET.get('artist_id'):
-                return self._get_request_artist()
+                return self._get_request_artist(request)
 
     @staticmethod
     def all_artists(request: WSGIRequest) -> Optional[JsonResponse]:
@@ -75,6 +75,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
 
     @staticmethod
     def _get_request_artist(request: WSGIRequest) -> Optional[JsonResponse]:
+        print(request.body)
         artist_id = request.GET.get('artist_id')
 
         if cache.get(get_artist_data(artist_id)):

@@ -11,7 +11,7 @@ from melowdee.auth.user.models import User
 import asyncio
 from django.core.cache import cache
 
-from melowdee.external.wallet_service import generate_wallet, check_balance
+from melowdee.external.wallet_service import check_balance
 
 
 logger = logging.getLogger('main')
@@ -35,7 +35,7 @@ class WalletSerializer(serializers.Serializer):
 
             with transaction.atomic():
                 wallet = Wallet.objects.create(
-                    user=user, public=None, private=data.get('private'), address=data.get('address')
+                    user=user, artist=artist
                 )
                 return wallet
 
