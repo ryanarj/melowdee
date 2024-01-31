@@ -21,14 +21,16 @@ class ArtistViewSet(viewsets.ModelViewSet):
     throttle_classes = [UserRateThrottle]
 
     def artists(self, request: WSGIRequest) -> Optional[JsonResponse]:
-
+        print('test121')
         if request.method == 'POST':
+            print('test11')
             return self._post_artists(request)
 
         elif request.method == 'GET':
 
             if request.GET.get('artist_id'):
-                return self._get_request_artist(request)
+                artist_id = request.GET.get('artist_id')
+                return self._get_request_artist(artist_id)
 
     @staticmethod
     def all_artists(request: WSGIRequest) -> Optional[JsonResponse]:
@@ -74,22 +76,22 @@ class ArtistViewSet(viewsets.ModelViewSet):
                 )
 
     @staticmethod
-    def _get_request_artist(request: WSGIRequest) -> Optional[JsonResponse]:
-        print(request.body)
-        artist_id = request.GET.get('artist_id')
-
+    def _get_request_artist(artist_id: str) -> Optional[JsonResponse]:
+        print('Here1')
         if cache.get(get_artist_data(artist_id)):
             artist_data = cache.get(artist_id)
-
+            print('Here2')
             return JsonResponse(
                 artist_data,
                 status=200
             )
 
         else:
+            print(f'Here3, {artist_id}')
             artist = Artist.objects.filter(id=artist_id).first()
 
             if artist:
+                print('Here4')
                 serializer = ArtistSerializer(
                     data={
                         'name': artist.name,
@@ -99,22 +101,24 @@ class ArtistViewSet(viewsets.ModelViewSet):
                 )
 
                 if serializer and serializer.is_valid():
+                    print('Here5')
                     cache.set(artist_id, serializer.data)
 
                     return JsonResponse(
                         serializer.data,
                         status=200
                     )
-
-                return JsonResponse(
-                    serializer.errors,
-                    status=400
-                )
+            print('Here6')
+            return JsonResponse(
+                data={},
+                status=404
+            )
 
     @staticmethod
     def _post_artists(request: WSGIRequest) -> JsonResponse:
-
+        print('test12')
         data = JSONParser().parse(request)
+        print(data)
         serializer = AddArtistSerializer(data=data)
 
         if serializer and serializer.is_valid():

@@ -1,18 +1,21 @@
 from typing import Optional
 
 from django.core.handlers.wsgi import WSGIRequest
+from django.db import transaction
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets
 from rest_framework.parsers import JSONParser
 from rest_framework.throttling import UserRateThrottle
+
+from melowdee.core.artist.models import Artist
 from melowdee.core.wallet.serializer import WalletSerializer, BalanceSerializer
 from django.core.cache import cache
 from melowdee.core.wallet.models import Wallet
 
-class WalletViewSet(viewsets.ModelViewSet):
 
+class WalletViewSet(viewsets.ModelViewSet):
     throttle_classes = [UserRateThrottle]
 
     @method_decorator(csrf_exempt, name='dispatch')
@@ -27,6 +30,30 @@ class WalletViewSet(viewsets.ModelViewSet):
                 return JsonResponse(serializer.data, status=201)
             return JsonResponse(serializer.errors, status=400)
 
+        if request.method == 'GET':
+            artist_id = request.GET.get('artist_id')
+            wallet = Wallet.objects.filter(artist_id=artist_id).first()
+            if wallet:
+                data = {'wallet': wallet}
+                return JsonResponse(
+                    data,
+                    safe=False,
+                    status=200
+                )
+
+            else:
+                with transaction.atomic():
+                    artist_id = Artist.objects.filter(artist_id=artist_id).first()
+
+                    wallet = Wallet.objects.create(
+                        user=user, artist=artist
+                    )
+                    return wallet
+                return JsonResponse(
+                    data={},
+                    safe=False,
+                    status=404
+                )
 
     @method_decorator(csrf_exempt, name='dispatch')
     @staticmethod
@@ -40,24 +67,3 @@ class WalletViewSet(viewsets.ModelViewSet):
                 data = {'balance': wallet.get('balance')}
                 return JsonResponse(data, status=201)
             return JsonResponse(serializer.errors, status=400)
-
-    @staticmethod
-    def get_artist_wallet(request: WSGIRequest) -> Optional[JsonResponse]:
-        artist_id = request.GET.get('artist_id')
-        if request.method == 'GET':
-            wallet = Wallet.objects.get(artist__id=artist_id).order_by('id')
-            if wallet:
-                data = {'wallet': wallet}
-                return JsonResponse(
-                    data,
-                    safe=False,
-                    status=200
-                )
-
-            else:
-                return JsonResponse(
-                    data={},
-                    safe=False,
-                    status=404
-                )
-

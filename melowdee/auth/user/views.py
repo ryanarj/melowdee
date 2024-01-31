@@ -51,7 +51,7 @@ class UserViewSet(viewsets.ViewSet):
                 data = {
                     'age': user_meta.age,
                     'username': user_meta.user.username,
-                    'artist_id': user.id,
+                    'user_id': user.id,
                 }
                 with transaction.atomic():
                     user_meta.last_login_at = arrow.utcnow().datetime
