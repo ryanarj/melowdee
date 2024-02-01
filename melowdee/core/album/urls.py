@@ -3,5 +3,5 @@ from melowdee.core.album.views import AlbumViewSet
 
 
 urlpatterns = [
-    path('albums', AlbumViewSet().albums),
+    path('v1/albums', AlbumViewSet().albums),
 ]

@@ -3,6 +3,6 @@ from melowdee.core.wallet.views import WalletViewSet
 
 
 urlpatterns = [
-    path('wallets', WalletViewSet().wallets),
-    path('wallets/balance', WalletViewSet().check_balance)
+    path('v1/wallets', WalletViewSet().wallets),
+    path('v1/wallets/balance', WalletViewSet().check_balance)
 ]

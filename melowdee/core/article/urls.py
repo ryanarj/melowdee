@@ -3,5 +3,5 @@ from melowdee.core.article.views import ArticleViewSet
 
 
 urlpatterns = [
-    path('articles', ArticleViewSet().articles)
+    path('v1/articles', ArticleViewSet().articles)
 ]

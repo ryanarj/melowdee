@@ -3,6 +3,6 @@ from melowdee.auth.user.views import UserViewSet
 
 
 urlpatterns = [
-    path('users/', UserViewSet().users),
-    path('users/sign_in/', UserViewSet().user_sign_in),
+    path('v1/users/', UserViewSet().users),
+    path('v1/users/sign_in/', UserViewSet().user_sign_in),
 ]
