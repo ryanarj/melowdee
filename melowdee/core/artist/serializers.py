@@ -14,15 +14,16 @@ class AddArtistSerializer(serializers.Serializer):
         name = validated_data.get('name')
         about = validated_data.get('about')
         user_id = validated_data.get('user_id')
-        print('test')
-        if not Artist.objects.filter(name=name).exists():
-            print(f'user_id_{user_id}')
+        query = Artist.objects.filter(user_id=user_id)
+
+        if not query.exists():
             user = User.objects.get(id=user_id)
             with transaction.atomic():
                 artist = Artist.objects.create(name=name, about=about, user=user)
             return artist
         else:
-            print('Artist exists')
+            artist = query.first()
+            return artist
 
 
 class AllArtistsSerializer(serializers.ModelSerializer):

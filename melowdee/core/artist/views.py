@@ -4,6 +4,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets
 from rest_framework.parsers import JSONParser
 from rest_framework.throttling import UserRateThrottle
@@ -20,17 +21,17 @@ from django.core.cache import cache
 class ArtistViewSet(viewsets.ModelViewSet):
     throttle_classes = [UserRateThrottle]
 
+    @csrf_exempt
     def artists(self, request: WSGIRequest) -> Optional[JsonResponse]:
-        print('test121')
         if request.method == 'POST':
-            print('test11')
             return self._post_artists(request)
 
-        elif request.method == 'GET':
-
-            if request.GET.get('artist_id'):
-                artist_id = request.GET.get('artist_id')
-                return self._get_request_artist(artist_id)
+    @csrf_exempt
+    def get_artist_by_user_id(self, request: WSGIRequest) -> Optional[JsonResponse]:
+        if request.method == 'GET':
+            if request.GET.get('user_id'):
+                user_id = request.GET.get('user_id')
+                return self._get_request_artist(user_id)
 
     @staticmethod
     def all_artists(request: WSGIRequest) -> Optional[JsonResponse]:
@@ -76,22 +77,18 @@ class ArtistViewSet(viewsets.ModelViewSet):
                 )
 
     @staticmethod
-    def _get_request_artist(artist_id: str) -> Optional[JsonResponse]:
-        print('Here1')
-        if cache.get(get_artist_data(artist_id)):
-            artist_data = cache.get(artist_id)
-            print('Here2')
+    def _get_request_artist(user_id: str) -> Optional[JsonResponse]:
+        if cache.get(get_artist_data(user_id)):
+            artist_data = cache.get(user_id)
             return JsonResponse(
                 artist_data,
                 status=200
             )
 
         else:
-            print(f'Here3, {artist_id}')
-            artist = Artist.objects.filter(id=artist_id).first()
 
+            artist = Artist.objects.filter(user_id=user_id).first()
             if artist:
-                print('Here4')
                 serializer = ArtistSerializer(
                     data={
                         'name': artist.name,
@@ -101,14 +98,12 @@ class ArtistViewSet(viewsets.ModelViewSet):
                 )
 
                 if serializer and serializer.is_valid():
-                    print('Here5')
-                    cache.set(artist_id, serializer.data)
+                    cache.set(user_id, serializer.data)
 
                     return JsonResponse(
                         serializer.data,
                         status=200
                     )
-            print('Here6')
             return JsonResponse(
                 data={},
                 status=404
@@ -116,9 +111,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
 
     @staticmethod
     def _post_artists(request: WSGIRequest) -> JsonResponse:
-        print('test12')
         data = JSONParser().parse(request)
-        print(data)
         serializer = AddArtistSerializer(data=data)
 
         if serializer and serializer.is_valid():
