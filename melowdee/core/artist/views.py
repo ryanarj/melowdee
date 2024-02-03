@@ -1,5 +1,6 @@
 from typing import Optional
 
+from django.contrib.auth.models import User
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
@@ -27,10 +28,9 @@ class ArtistViewSet(viewsets.ModelViewSet):
             return self._post_artists(request)
 
     @csrf_exempt
-    def get_artist_by_user_id(self, request: WSGIRequest) -> Optional[JsonResponse]:
+    def get_artist_by_user_id(self, request: WSGIRequest, user_id: str) -> Optional[JsonResponse]:
         if request.method == 'GET':
-            if request.GET.get('user_id'):
-                user_id = request.GET.get('user_id')
+            if user_id:
                 return self._get_request_artist(user_id)
 
     @staticmethod
@@ -86,8 +86,13 @@ class ArtistViewSet(viewsets.ModelViewSet):
             )
 
         else:
-
-            artist = Artist.objects.filter(user_id=user_id).first()
+            print(user_id)
+            user = User.objects.filter(id=user_id).first()
+            if not user:
+                print('NOT FOUND')
+            artist = Artist.objects.filter(user=user).first()
+            if not artist:
+                print('NOT FOUND')
             if artist:
                 serializer = ArtistSerializer(
                     data={

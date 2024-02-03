@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="abf9d456-ddea-42de-bd8e-ebc83e3aa588" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/melowdee/core/artist/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/core/artist/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/melowdee/auth/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/auth/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/melowdee/core/artist/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/melowdee/core/artist/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +108,8 @@
       <option name="presentableId" value="Default" />
       <updated>1662481063922</updated>
       <workItem from="1706551691577" duration="11880000" />
-      <workItem from="1706816500785" duration="2581000" />
+      <workItem from="1706816500785" duration="3377000" />
+      <workItem from="1706996305884" duration="1882000" />
     </task>
     <servers />
   </component>

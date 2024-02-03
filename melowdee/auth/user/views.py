@@ -13,6 +13,8 @@ from melowdee.auth.user.models import UserMetadata
 from melowdee.auth.user.serializers import CreateUserSerializer, UserSigninSerializer
 import arrow
 
+from melowdee.core.artist.models import Artist
+
 
 class UserViewSet(viewsets.ViewSet):
 
@@ -48,10 +50,12 @@ class UserViewSet(viewsets.ViewSet):
 
             if user:
                 user_meta = UserMetadata.objects.get(user_id=user)
+                artist = Artist.objects.filter(user_id=user.id).first()
                 data = {
                     'age': user_meta.age,
                     'username': user_meta.user.username,
                     'user_id': user.id,
+                    'artist_id': artist.id if artist else None
                 }
                 with transaction.atomic():
                     user_meta.last_login_at = arrow.utcnow().datetime
