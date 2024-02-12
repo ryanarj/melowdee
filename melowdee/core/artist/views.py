@@ -28,10 +28,10 @@ class ArtistViewSet(viewsets.ModelViewSet):
             return self._post_artists(request)
 
     @csrf_exempt
-    def get_artist_by_user_id(self, request: WSGIRequest, user_id: str) -> Optional[JsonResponse]:
+    def get_artist_by_id(self, request: WSGIRequest, artist_id: str) -> Optional[JsonResponse]:
         if request.method == 'GET':
-            if user_id:
-                return self._get_request_artist(user_id)
+            if artist_id:
+                return self._get_request_artist(artist_id)
 
     @staticmethod
     def all_artists(request: WSGIRequest) -> Optional[JsonResponse]:
@@ -77,20 +77,16 @@ class ArtistViewSet(viewsets.ModelViewSet):
                 )
 
     @staticmethod
-    def _get_request_artist(user_id: str) -> Optional[JsonResponse]:
-        if cache.get(get_artist_data(user_id)):
-            artist_data = cache.get(user_id)
+    def _get_request_artist(artist_id: str) -> Optional[JsonResponse]:
+        if cache.get(get_artist_data(artist_id)):
+            artist_data = cache.get(artist_id)
             return JsonResponse(
                 artist_data,
                 status=200
             )
 
         else:
-            print(user_id)
-            user = User.objects.filter(id=user_id).first()
-            if not user:
-                print('NOT FOUND')
-            artist = Artist.objects.filter(user=user).first()
+            artist = Artist.objects.filter(id=artist_id).first()
             if not artist:
                 print('NOT FOUND')
             if artist:
@@ -103,7 +99,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
                 )
 
                 if serializer and serializer.is_valid():
-                    cache.set(user_id, serializer.data)
+                    cache.set(artist_id, serializer.data)
 
                     return JsonResponse(
                         serializer.data,
