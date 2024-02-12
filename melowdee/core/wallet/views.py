@@ -1,3 +1,4 @@
+import json
 from typing import Optional
 
 from django.core.handlers.wsgi import WSGIRequest
@@ -11,7 +12,6 @@ from rest_framework.throttling import UserRateThrottle
 
 from melowdee.core.artist.models import Artist
 from melowdee.core.wallet.serializer import WalletSerializer, BalanceSerializer
-from django.core.cache import cache
 from melowdee.core.wallet.models import Wallet
 
 
@@ -30,11 +30,14 @@ class WalletViewSet(viewsets.ModelViewSet):
                 return JsonResponse(serializer.data, status=201)
             return JsonResponse(serializer.errors, status=400)
 
+    @method_decorator(csrf_exempt, name='dispatch')
+    @staticmethod
+    def wallet_balance(request: WSGIRequest, artist_id: str) -> Optional[JsonResponse]:
+
         if request.method == 'GET':
-            artist_id = request.GET.get('artist_id')
             wallet = Wallet.objects.filter(artist_id=artist_id).first()
             if wallet:
-                data = {'wallet': wallet}
+                data = {'balance': wallet.balance}
                 return JsonResponse(
                     data,
                     safe=False,
@@ -43,17 +46,18 @@ class WalletViewSet(viewsets.ModelViewSet):
 
             else:
                 with transaction.atomic():
-                    artist_id = Artist.objects.filter(artist_id=artist_id).first()
-
+                    print('test!')
+                    artist = Artist.objects.filter(id=artist_id).first()
                     wallet = Wallet.objects.create(
-                        user=user, artist=artist
+                        user=artist.user, artist=artist
                     )
-                    return wallet
-                return JsonResponse(
-                    data={},
-                    safe=False,
-                    status=404
-                )
+                    data = {'balance': wallet.balance}
+                    return JsonResponse(
+                        data,
+                        safe=False,
+                        status=201
+                    )
+
 
     @method_decorator(csrf_exempt, name='dispatch')
     @staticmethod
