@@ -11,7 +11,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.throttling import UserRateThrottle
 
 from melowdee.core.artist.models import Artist
-from melowdee.core.wallet.serializer import WalletSerializer, BalanceSerializer
+from melowdee.core.wallet.serializers import WalletSerializer, BalanceSerializer
 from melowdee.core.wallet.models import Wallet
 
 
@@ -46,7 +46,6 @@ class WalletViewSet(viewsets.ModelViewSet):
 
             else:
                 with transaction.atomic():
-                    print('test!')
                     artist = Artist.objects.filter(id=artist_id).first()
                     wallet = Wallet.objects.create(
                         user=artist.user, artist=artist

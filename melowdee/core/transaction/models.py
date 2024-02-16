@@ -2,22 +2,22 @@ from django.db import models
 from melowdee.auth.user.models import User
 
 
-class TransactionType(models.IntegerChoices):
-    PAYMENT = 0, 'payment'
-    REFUNDED = 1, 'refunded'
-    WITHDRAWAL = 2, 'withdrawal'
-    TRANSFER = 3, 'transfer'
+class TransactionType(models.TextChoices):
+    PAYMENT = 'payment'
+    REFUNDED = 'refunded'
+    WITHDRAWAL = 'withdrawal'
+    TRANSFER = 'transfer'
 
 
-class TransactionStatus(models.IntegerChoices):
-    PENDING = 0, 'pending'
-    COMPLETED = 1, 'completed'
-    FAILED = 2, 'failed'
+class TransactionStatus(models.TextChoices):
+    PENDING = 'pending'
+    COMPLETED = 'completed'
+    FAILED = 'failed'
 
 
 class Transaction(models.Model):
-    type = models.IntegerField(default=TransactionType.PAYMENT, choices=TransactionType.choices)
-    status = models.IntegerField(default=TransactionStatus.PENDING, choices=TransactionStatus.choices)
+    type = models.CharField(max_length=30, default=TransactionType.PAYMENT.value, choices=TransactionType.choices)
+    status = models.CharField(max_length=30, default=TransactionStatus.PENDING.value, choices=TransactionStatus.choices)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

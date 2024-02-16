@@ -6,7 +6,7 @@ from django.test import TestCase
 from uuid import uuid4
 from rest_framework.test import APIRequestFactory
 from melowdee.core.wallet.models import Wallet
-from melowdee.core.wallet.serializer import BalanceSerializer
+from melowdee.core.wallet.serializers import BalanceSerializer
 from melowdee.core.wallet.views import WalletViewSet
 
 
